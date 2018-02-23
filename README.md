@@ -2,13 +2,15 @@
 
 Everything starts when i was discussing with a colleague of mine about how parser are not very easy to update dynamically.
 He mentions Pratt parser, a kind of parsers i was not aware of.
-A kick Google search on that subject links to an article of Munificient Bob about Pratt Parser
-()
-I really like the articles from Munificient Bob, it's always well written, it's a pleasure to read.
+A kick Google search on that subject links to an
+(https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)[article of Munificient Bob about Pratt Parser]
 
-But, for the code provided, well, hugh, it's embarrassing, let say it's a code written in 2006, a long time for Java,
-so here is my version of how to write a Pratt Parser in Java 9.
+I really like the articles from Munificient Bob, it's always well written, it's a pleasure to read,
+but, for the code provided, well, hugh, it's embarrassing, let say it's a code written in 2006,
+a long time for Java, so here is my version of how to write a Pratt Parser in Java 9.
 
+
+### Down The Rabbit Hole
 The idea behind a Pratt parser is that when you want to parse an expression, you have two kind of productions
 either a production that starts with a token, a prefix expression, like this
 ```
