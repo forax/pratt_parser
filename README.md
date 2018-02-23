@@ -1,6 +1,6 @@
 # pratt_parser
 
-Everything starts when i was discussing with a colleague of mine about how parser are not very easy to update dynamically.
+This story starts when i was discussing with a colleague of mine about how parser are not very easy to update dynamically.
 He mentions Pratt parser, a kind of parsers i was not aware of.
 A kick Google search on that subject links to an article of Munificient Bob about Pratt Parser,
 https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy
