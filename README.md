@@ -2,12 +2,12 @@
 
 Everything starts when i was discussing with a colleague of mine about how parser are not very easy to update dynamically.
 He mentions Pratt parser, a kind of parsers i was not aware of.
-A kick Google search on that subject links to an
-[https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/](article of Munificient Bob about Pratt Parser)
+A kick Google search on that subject links to an article of Munificient Bob about Pratt Parser,
+https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy
 
 I really like the articles from Munificient Bob, it's always well written, it's a pleasure to read,
-but, for the code provided, well, hugh, it's embarrassing, let say it's a code written in 2006,
-a long time for Java, so here is my version of how to write a Pratt Parser in Java 9.
+but for the code provided, well, hugh, it's embarrassing, let say it's a code written in 2006,
+and more than 10 years is a long time for Java, so here is my version of how to write a Pratt Parser in Java 9.
 
 
 ### Down The Rabbit Hole
@@ -118,6 +118,6 @@ numbers, unary '+', unary '-', binary '+', binary '*' and parenthesis.
 ```
 
 There is also a version
-- without enums (ParserExampleTests) or
-- that create an AST an evaluate it using a visitor (ParserExample2Tests).
+- without enums (https://github.com/forax/pratt_parser/blob/master/src/test/java/com.github.forax.pratt_parser/com/github/forax/pratt_parser/ParserExampleTests.java) or
+- that create an AST an evaluate it using a visitor (https://github.com/forax/pratt_parser/blob/master/src/test/java/com.github.forax.pratt_parser/com/github/forax/pratt_parser/ParserExample2Tests.java).
 
