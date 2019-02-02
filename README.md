@@ -2,12 +2,12 @@
 
 This story starts when i was discussing with a colleague of mine about how parser are not very easy to update dynamically.
 He mentions Pratt parser, a kind of parsers i was not aware of.
-A kick Google search on that subject links to an article of Munificient Bob about Pratt Parser,
+A quick Google search on that subject links to an article of Munificient Bob about Pratt Parser,
 https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy
 
 I really like the articles from Munificient Bob, it's always well written, it's a pleasure to read,
 but for the code provided, well, hugh, it's embarrassing, let say it's a code written in 2006,
-and more than 10 years is a long time for Java, so here is my version of how to write a Pratt Parser in Java 9.
+and more than 10 years is a long time for Java, so here is my version of how to write a Pratt Parser in Java 11.
 
 
 ### Down The Rabbit Hole
@@ -64,18 +64,18 @@ So a Pratt parser is created with the following arguments
 and the parsing algorithm is this one: 
 ```java
 public E parseExpr(P precedence) {
-  T token = lexer.consume();
+  var token = lexer.consume();
   
-  PrefixParselet<E,P> prefix = prefixMap.get(token);
+  var prefix = prefixMap.get(token);
   if (prefix == null) {
     throw new IllegalStateException("Could not parse token " +  token + " of value " + lexer.value());
   }
-  E left = prefix.parse(this);
+  var left = prefix.parse(this);
 
   while (comparator.compare(precedence, precedenceFun.apply(lexer.lookhead())) < 0) {
     token = lexer.consume();
     
-    SuffixParselet<E,P> suffix = suffixMap.get(token);
+    var suffix = suffixMap.get(token);
     left = suffix.parse(this, left);
   }
   return left;
