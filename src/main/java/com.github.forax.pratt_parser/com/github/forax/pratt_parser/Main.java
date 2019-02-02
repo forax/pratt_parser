@@ -13,8 +13,8 @@ public class Main {
   enum Precedence { P_NONE, P_ADD, P_MUL }
   
   public static void main(String[] args) {
-    String text = "+ 2 + + 3 * - (- 4)";
-    Lexer<Token> lexer = Lexer.factory(EOF,
+    var text = "+ 2 + + 3 * - (- 4)";
+    var lexer = Lexer.factory(EOF,
         entry(PLUS,  "\\+"),
         entry(MINUS, "\\-"),
         entry(STAR,  "\\*"),
@@ -35,7 +35,7 @@ public class Main {
             PLUS,  (p, left) -> left + p.parseExpr(P_ADD),
             STAR,  (p, left) -> left * p.parseExpr(P_MUL)));
     
-    int result = parser.parseExpr(P_NONE);
+    var result = parser.parseExpr(P_NONE);
     System.out.println(result);
   }
 }

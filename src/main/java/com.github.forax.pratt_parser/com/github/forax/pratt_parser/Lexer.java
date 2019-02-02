@@ -1,13 +1,12 @@
 package com.github.forax.pratt_parser;
 
+import static java.util.regex.Pattern.compile;
 import static java.util.stream.Collectors.joining;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A simple lexer with a 1 token look-head.
@@ -47,7 +46,7 @@ public interface Lexer<T> {
    * @throws IllegalStateException if the next token doesn't match the token pass as argument.
    */
   default void consume(T token) {
-    T current = consume();
+    var current = consume();
     if (!token.equals(current)) {
       throw new IllegalStateException("parsing error " + current + " but should be " + token);
     }
@@ -71,9 +70,9 @@ public interface Lexer<T> {
     if (regexes.length == 0) {
       throw new IllegalArgumentException("no token/regex pair specified");
     }
-    Pattern pattern = Pattern.compile(Arrays.stream(regexes).map(e -> '(' + e.getValue() + ')').collect(joining("|")));
+    var pattern = compile(Arrays.stream(regexes).map(e -> '(' + e.getValue() + ')').collect(joining("|")));
     return input -> {
-      Matcher matcher = pattern.matcher(input);
+      var matcher = pattern.matcher(input);
       return new Lexer<>() {
         private T token;
         private String value;
@@ -109,7 +108,7 @@ public interface Lexer<T> {
           }
 
           for(int i = 0; i < matcher.groupCount(); i++) {
-            String value = matcher.group(i + 1);
+            var value = matcher.group(i + 1);
             if (value != null) {
               this.value = value;
               return this.token = regexes[i].getKey();

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class ParserTests {
   @Test
   void commaSeperatedList() {
-    Lexer<String> lexer = Lexer.factory("$",
+    var lexer = Lexer.factory("$",
         entry(",",   ","),
         entry("id", "[a-z]+")
       ).apply("a, b, c");
@@ -29,13 +29,13 @@ class ParserTests {
             ",", (p, left) -> { left.addAll(p.parseExpr(1)); return left; })
         );
 
-    List<String> result = parser.parseExpr(0);
+    var result = parser.parseExpr(0);
     assertEquals(List.of("a", "b", "c"), result);
   }
   
   @Test
   void nullArguments() {
-    Lexer<String> lexer = Lexer.factory("$", Map.entry("a", "a")).apply("a");
+    var lexer = Lexer.factory("$", Map.entry("a", "a")).apply("a");
     assertThrows(NullPointerException.class, () -> Parser.create(null , __ -> 0, Integer::compareTo, Map.of(), Map.of()));
     assertThrows(NullPointerException.class, () -> Parser.create(lexer, null   , Integer::compareTo, Map.of(), Map.of()));
     assertThrows(NullPointerException.class, () -> Parser.create(lexer, __ -> 0, null              , Map.of(), Map.of()));
@@ -45,7 +45,7 @@ class ParserTests {
   
   @Test
   void unknownToken() {
-    Lexer<String> lexer = Lexer.factory("$", entry("a", "a")).apply("a");
+    var lexer = Lexer.factory("$", entry("a", "a")).apply("a");
     Parser<Integer, Integer> parser = Parser.create(lexer, 
         __ -> 0,
         Integer::compareTo,
@@ -58,7 +58,7 @@ class ParserTests {
   
   @Test
   void noPrefix() {
-    Lexer<String> lexer = Lexer.factory("$", entry("a", "a")).apply("a");
+    var lexer = Lexer.factory("$", entry("a", "a")).apply("a");
     Parser<Integer, Integer> parser = Parser.create(lexer, 
         __ -> 0,
         Integer::compareTo,
@@ -70,7 +70,7 @@ class ParserTests {
   
   @Test
   void noSuffix() {
-    Lexer<String> lexer = Lexer.factory("$",
+    var lexer = Lexer.factory("$",
         entry("-",   "\\-"),
         entry("num", "[0-9]+")
       ).apply("--3");

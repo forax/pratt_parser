@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 class ParserExampleTests {
   @Test
   void test() {
-    String text = "+ 2 + + 3 * - (- 4)";
-    Lexer<String> lexer = Lexer.factory("$",
+    var text = "+ 2 + + 3 * - (- 4)";
+    var lexer = Lexer.factory("$",
         entry("+",   "\\+"),
         entry("-",   "\\-"),
         entry("*",   "\\*"),

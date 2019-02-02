@@ -46,7 +46,7 @@ class ParserExample2Tests {
     R visit(Object o);
     
     static <R> Visitor<R> create(Consumer<? super Registry<R>> consumer) {
-      HashMap<Class<?>, Function<Object, ? extends R>> map = new HashMap<>();
+      var map = new HashMap<Class<?>, Function<Object, ? extends R>>();
       Visitor<R> visitor = object -> map.get(object.getClass()).apply(object);
       consumer.accept(new Registry<>() {
         @Override
@@ -64,8 +64,8 @@ class ParserExample2Tests {
   
   @Test
   void test() {
-    String text = "+ 2 + + 3 * - (- 4)";
-    Lexer<Token> lexer = Lexer.factory(EOF,
+    var text = "+ 2 + + 3 * - (- 4)";
+    var lexer = Lexer.factory(EOF,
         entry(PLUS,  "\\+"),
         entry(MINUS, "\\-"),
         entry(STAR,  "\\*"),
@@ -85,7 +85,7 @@ class ParserExample2Tests {
         Map.of(
             PLUS,  (p, left) -> new BinOp((a, b) -> a + b, left, p.parseExpr(P_ADD)),
             STAR,  (p, left) -> new BinOp((a, b) -> a * b, left, p.parseExpr(P_MUL))));
-    Expr expr = parser.parseExpr(P_NONE);
+    var expr = parser.parseExpr(P_NONE);
     
     Visitor<Integer> visit = Visitor.create(registry -> registry
        .when(Literal.class, (v, literal) -> literal.value)

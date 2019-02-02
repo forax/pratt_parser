@@ -1,9 +1,9 @@
 package com.github.forax.pratt_parser;
 
+import static com.github.forax.pratt_parser.LexerExampleTests.Token.COMMA;
+import static com.github.forax.pratt_parser.LexerExampleTests.Token.EOF;
+import static com.github.forax.pratt_parser.LexerExampleTests.Token.ID;
 import static java.util.Map.entry;
-import static com.github.forax.pratt_parser.LexerExampleTests.Token.*;
-
-import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,13 +17,13 @@ class LexerExampleTests {
   
   @Test
   void test() {
-    Function<CharSequence, Lexer<Token>> factory =
+    var factory =
         Lexer.factory(EOF, 
           entry(COMMA, ","),
           entry(ID,    "[a-z]+")
         );
     
-    Lexer<Token> lexer = factory.apply("hello, boy");
+    var lexer = factory.apply("hello, boy");
     
     /*
     Token token;

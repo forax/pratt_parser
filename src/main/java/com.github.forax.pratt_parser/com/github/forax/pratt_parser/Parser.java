@@ -84,17 +84,17 @@ public interface Parser<E, P> {
       public E parseExpr(P precedence) {
         Objects.requireNonNull(precedence);
         
-        T token = lexer.consume();
+        var token = lexer.consume();
         
-        PrefixParselet<E,P> prefix = prefixMap.get(token);
+        var prefix = prefixMap.get(token);
         if (prefix == null) {
           throw new IllegalStateException("Could not parse token " +  token + " of value " + lexer.value());
         }
-        E left = prefix.parse(this);
+        var left = prefix.parse(this);
 
         while (comparator.compare(precedence, precedenceFun.apply(lexer.lookhead())) < 0) {
           token = lexer.consume();
-          SuffixParselet<E,P> suffix = suffixMap.get(token);
+          var suffix = suffixMap.get(token);
           left = suffix.parse(this, left);
         }
         return left;

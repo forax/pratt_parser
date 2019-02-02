@@ -1,11 +1,11 @@
 package com.github.forax.pratt_parser;
 
+import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Map;
-import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +20,8 @@ class LexerTests {
   
   @Test
   void matchOnlyOneKingOfToken() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("eof", Map.entry("token", "[a-z]+"));
-    Lexer<String> lexer = factory.apply("hello bob");
+    var factory = Lexer.factory("eof", entry("token", "[a-z]+"));
+    var lexer = factory.apply("hello bob");
     lexer.consume("token");
     assertEquals("hello", lexer.value());
     lexer.consume("token");
@@ -32,17 +32,17 @@ class LexerTests {
   
   @Test
   void matchEmptyText() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("eof", Map.entry("token", "[a-z]+"));
-    Lexer<String> lexer = factory.apply("");
+    var factory = Lexer.factory("eof", entry("token", "[a-z]+"));
+    var lexer = factory.apply("");
     lexer.consume("eof");
     assertNull(lexer.value());
   }
   
   @Test
   void matchNoSeparator() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("$",
-        Map.entry("a", "a"), Map.entry("b", "b"));
-    Lexer<String> lexer = factory.apply("abaab");
+    var factory = Lexer.factory("$",
+        entry("a", "a"), entry("b", "b"));
+    var lexer = factory.apply("abaab");
     lexer.consume("a");
     lexer.consume("b");
     lexer.consume("a");
@@ -53,16 +53,16 @@ class LexerTests {
   
   @Test
   void matchNullText() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("$", Map.entry("token", "[0-9]+"));
+    var factory = Lexer.factory("$", entry("token", "[0-9]+"));
     assertThrows(NullPointerException.class, () -> factory.apply(null));
   }
   
   @Test
   void matchFirstRegex() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("$",
-        Map.entry("goto",  "goto"),
-        Map.entry("token", "[a-z]+"));
-    Lexer<String> lexer = factory.apply("goto");
+    var factory = Lexer.factory("$",
+        entry("goto",  "goto"),
+        entry("token", "[a-z]+"));
+    var lexer = factory.apply("goto");
     lexer.consume("goto");
     assertEquals("goto", lexer.value());
     lexer.consume("$");
@@ -70,10 +70,10 @@ class LexerTests {
   
   @Test
   void matchFirstRegex2() {
-    Function<CharSequence, Lexer<String>> factory = Lexer.factory("$",
-        Map.entry("token", "[a-z]+"),
-        Map.entry("goto",  "goto"));
-    Lexer<String> lexer = factory.apply("goto");
+    var factory = Lexer.factory("$",
+        entry("token", "[a-z]+"),
+        entry("goto",  "goto"));
+    var lexer = factory.apply("goto");
     lexer.consume("token");
     assertEquals("goto", lexer.value());
     lexer.consume("$");
