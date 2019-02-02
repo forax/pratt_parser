@@ -20,8 +20,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
@@ -164,21 +164,50 @@ class pro_wrapper {
     }
   }
   
+  public interface PathConsumer {
+    void accept(Path path) throws IOException;
+  }
+  
+  private static void retry(Path resource, int times, PathConsumer consumer) throws IOException {
+    if (times <= 0) {
+      throw new IllegalArgumentException("times <= 0");
+    }
+    IOException exception = null;
+    var count = times;
+    do {
+      try {
+        consumer.accept(resource);
+        return;
+      } catch(IOException e) {
+        if (exception == null) {
+          exception = new IOException();
+        }
+        exception.addSuppressed(e);
+        
+        // cleanup
+        Files.deleteIfExists(resource);
+        
+        System.out.println("download fails ... retry !");
+      }
+    } while(--count != 0);
+    throw exception;
+  }
+  
   private static int installAndRun(String[] args) throws IOException {
     var release = lastestReleaseVersion().orElseThrow(() -> new IOException("latest release not found on Github"));
     var specialBuild = specialBuild().map(build -> '-' + build).orElse("");
     var filename = "pro-" + platform() + specialBuild + ".zip";
     
-    var cachePath = Paths.get(userHome(), ".pro", "cache", release, filename);
+    var cachePath = Path.of(userHome(), ".pro", "cache", release, filename);
     if (!exists(cachePath)) {
-      download(release, filename, cachePath);
+      retry(cachePath, 3, _cachedPath -> download(release, filename, _cachedPath));
     }
     
-    var releaseTxt = Paths.get("pro", "pro-release.txt");
+    var releaseTxt = Path.of("pro", "pro-release.txt");
     if (!exists(releaseTxt) || !firstLine(releaseTxt).equals(release)) {
       deleteAllFiles(releaseTxt.getParent());
       
-      unpack(cachePath, Paths.get("."));
+      unpack(cachePath, Path.of("."));
       write(releaseTxt, List.of(release));
     }
     
@@ -190,7 +219,7 @@ class pro_wrapper {
       exit(installAndRun(args));
     } catch(IOException e) {
       System.err.println("i/o error " + e.getMessage() +
-          Optional.ofNullable(e.getStackTrace()).filter(stack -> stack.length > 0).map(stack -> " from " + stack[0]).orElse(""));
+          Optional.ofNullable(e.getStackTrace()).filter(stack -> stack.length > 0).map(stack -> " at " + stack[0]).orElse(""));
       exit(1);
     }
   }
