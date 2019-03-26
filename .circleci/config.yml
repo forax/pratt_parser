@@ -15,6 +15,6 @@ jobs:
 
       # run
       - run: export PRO_SPECIAL_BUILD='early-access'
-      - run: java pro_wrapper version
+      - run: java pro_wrapper.java version
       - run: ./pro/bin/pro version
       - run: ./pro/bin/pro
