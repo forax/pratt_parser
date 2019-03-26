@@ -14,7 +14,7 @@ jobs:
       - checkout
 
       # run
-      - run: export PRO_SPECIAL_BUILD='early-access'
+      - run: echo 'export PRO_SPECIAL_BUILD="early-access"' >> $BASH_ENV
       - run: java pro_wrapper.java version
       - run: ./pro/bin/pro version
       - run: ./pro/bin/pro
